@@ -339,3 +339,15 @@ One more thing - you will have to add the following permission to your manifest 
 ```xml
 <uses-permission android:name="android.permission.MANAGE_USB" />
 ```
+
+## To bypass a Permission Confirmation Popup
+
+The following modification should be added to the file frameworks/base/packages/SystemUI/src/com/android/systemui/usb/UsbPermissionActivity.java:
+```java
+public void onStart() {
+    super.onStart();
+    mPermissionGranted = true;
+
+    finish();
+}
+```
