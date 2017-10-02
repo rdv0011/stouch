@@ -299,6 +299,16 @@ import android.os.ServiceManager;
 
 public class LaunchReceiver extends BroadcastReceiver
 {
+	bool shoudUseDevice(UsbDevice device) {
+		// VID_MICROSOFT 0x45e PID_NUI_CAMERA 0x02bf
+		// PID_NUI_AUDIO 0x02ad PID_NUI_MOTOR 0x02b0
+		// PID_K4W_CAMERA 0x02bf
+		// PID_K4W_AUDIO 0x02be PID_K4W_AUDIO_ALT_1 0x02c3 PID_K4W_AUDIO_ALT_2 0x02bb
+		int prodId = device.getProductId();
+		return device.getVendorId() == 0x45e
+		&& ( prodId == 0x02bf || prodId == 0x02ad || prodId == 0x02b0
+		|| prodId == 0x02bf || prodId == 0x02be || prodId == 0x02c3 || prodId == 0x02bb )
+	}
     public void onReceive( Context context, Intent intent )
     {
         String action = intent.getAction();
@@ -319,7 +329,7 @@ public class LaunchReceiver extends BroadcastReceiver
                     while( deviceIterator.hasNext() )
                     {
                             UsbDevice device = deviceIterator.next();
-                            if( device.getVendorId() == 0x0403 )
+                            if( shoudUseDevice() )
                             {
                                 service.grantDevicePermission( device, ai.uid );
                                 service.setDevicePackage( device, YOUR_APP_PACKAGE_NAMESPACE );
