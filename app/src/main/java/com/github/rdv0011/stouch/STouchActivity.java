@@ -1,8 +1,7 @@
-package com.github.dmitryrybakov.stouch;
+package com.github.rdv0011.stouch;
  
-import com.github.dmitryrybakov.stouch.STouchService.LocalBinder;
+import com.github.rdv0011.stouch.STouchService.LocalBinder;
 
-import android.os.Bundle;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,13 +15,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
 
 public class STouchActivity extends AppCompatActivity {
     STouchService mService;
     boolean mBound = false;
     TextView textView1 = null;
+    STouchEventInjector mTouchInjector;
 
     // Defines callbacks for service binding, passed to bindService()
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -49,6 +50,7 @@ public class STouchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -109,6 +111,18 @@ public class STouchActivity extends AppCompatActivity {
           	textView1.setText(R.string.freenect_stopped);
         }
     }
+
+    public void virtualMetricsUpdated(int xVirtualOffset, int yVirtualOffset,
+                                    int virtualWidth, int virtualHeight) {
+        DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+        mTouchInjector = new STouchEventInjector(xVirtualOffset, yVirtualOffset,
+                virtualWidth, virtualWidth, metrics.widthPixels, metrics.heightPixels);
+    }
+
+    public void sendEvent(int x, int y) {
+        if (mTouchInjector != null)
+            mTouchInjector.sendEvent(x, y);
+    }
     
     public void onClickBind(View v) {
     	bindImpl();
@@ -129,6 +143,6 @@ public class STouchActivity extends AppCompatActivity {
     }
 
     static {
-        System.loadLibrary("stouch-lib");
+        System.loadLibrary("stouch");
     }
 }

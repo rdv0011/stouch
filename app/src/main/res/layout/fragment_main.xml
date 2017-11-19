@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main"
-    tools:context="com.github.dmitryrybakov.stouch.MainActivityFragment">
+    tools:context="com.github.rdv0011.stouch.MainActivityFragment">
 
     <TextView
         android:id="@+id/sample_text"

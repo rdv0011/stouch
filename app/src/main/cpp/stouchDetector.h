@@ -8,7 +8,6 @@
 // TUIO
 #include "TuioServer.h"
 
-class STouchEventInjector;
 
 class STouchDetector {
 public:
@@ -33,7 +32,6 @@ private:
 	// TUIO server object
 	TUIO::TuioServer* tuio;
 	TUIO::TuioTime tuioTime;
-	STouchEventInjector* eventInjector;
 	int64_t frmCount;
 };
 #endif //_STOUCH_DETECTOR_H_

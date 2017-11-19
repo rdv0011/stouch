@@ -1,4 +1,4 @@
-package com.github.dmitryrybakov.stouch;
+package com.github.rdv0011.stouch;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

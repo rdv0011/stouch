@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.0'
     defaultConfig {
-        applicationId "com.github.dmitryrybakov.stouch"
+        applicationId "com.github.rdv0011.stouch"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 15
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -14,6 +14,7 @@ android {
             cmake {
                 cppFlags "-std=c++11", "-DANDROID_STL=gnustl_static", "-fexceptions", "-frtti"
                 cFlags "-O3"
+                abiFilters = ['armeabi-v7a']
             }
         }
     }
@@ -23,9 +24,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
+        }
+    }
+
+    signingConfigs {
+        // It's not necessary to specify, but I like to keep the debug keystore
+        // in SCM so all our debug builds (on all workstations) use the same
+        // key for convenience
+        debug {
+            storeFile file("/Users/dmitry/Downloads/A10-android4.0/build/target/product/security/platform.jks")
+            storePassword "android"
+            keyAlias "android"
+            keyPassword "android"
         }
     }
 }

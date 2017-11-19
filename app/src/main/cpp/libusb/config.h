@@ -36,7 +36,7 @@
 #define OS_LINUX 1
 
 /* Enable output to system log */
-//#define USE_SYSTEM_LOGGING_FACILITY 1
+#define USE_SYSTEM_LOGGING_FACILITY 1
 
 /* type of second poll() argument */
 #define POLL_NFDS_TYPE nfds_t

@@ -11,11 +11,11 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 
 # Set a path where OpenCVConfig.cmake is located
-# It supposed to be the Android SDK. You can make a soft link /usr/local/share/OpenCV pointing to a real location
+# Usually it is located inside the Android SDK. You can make a soft link /usr/local/share/OpenCV pointing to a real location
 # A sample is: ln -s ~/OpenCV-android-sdk /usr/local/share/OpenCV
 set(OpenCV_DIR "/usr/local/share/OpenCV/sdk/native/jni")
 set(OpenCV_STATIC ON)
-find_package( OpenCV 3 REQUIRED)
+find_package(OpenCV 3 REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # Try to add the whole src folder using one line
@@ -28,8 +28,7 @@ set(LIBUSB_SRC "${LIBUSB_SRC_REL}/core.c" "${LIBUSB_SRC_REL}/descriptor.c" "${LI
 				"${LIBUSB_SRC_REL}/os/linux_usbfs.c" "${LIBUSB_SRC_REL}/os/poll_posix.c"
 				"${LIBUSB_SRC_REL}/os/threads_posix.c" "${LIBUSB_SRC_REL}/os/linux_netlink.c")
 set(MAIN_SRC_REL "src/main/cpp/")
-set(MAIN_SRC "${MAIN_SRC_REL}/stouchDetector.cpp" "${MAIN_SRC_REL}/stouchEventInjector.cpp"
-            "${MAIN_SRC_REL}/stouchJNI.cpp")
+set(MAIN_SRC "${MAIN_SRC_REL}/stouchDetector.cpp" "${MAIN_SRC_REL}/stouchJNI.cpp")
 set(SRC_FILES ${SRC_FILES} ${LIBUSB_SRC})
 set(SRC_FILES ${SRC_FILES} ${MAIN_SRC})
 

@@ -1,6 +1,5 @@
 #include "stouchDetector.h"
 #include "stouchFreenect.hpp"
-#include "stouchEventInjector.h"
 
 #include "opencv2/imgproc.hpp"
 
@@ -12,6 +11,10 @@ const unsigned int BackgroundTrain = 30;
 const unsigned short TouchDepthMin = 2;
 const unsigned short TouchDepthMax = 15;
 const unsigned int ContourAreaThreshold = 50;
+
+extern void virtualMetricsUpdated(int xVirtualOffset, int yVirtualOffset,
+								int virtualWidth, int virtualHeight);
+extern void sendEvent(int x, int y);
 
 STouchDetector::STouchDetector() {
 	xMin = 140;
@@ -30,12 +33,11 @@ STouchDetector::STouchDetector() {
 	roi = Rect(xMin, yMin, xMax - xMin, yMax - yMin);
 	// TUIO server object
 	tuio = nullptr;
-	eventInjector = new STouchEventInjector(xMax - xMin, yMax - yMin);
+	virtualMetricsUpdated(xMin, yMin, abs(xMax - xMin), abs(yMax - yMin));
 	frmCount = 0;
 }
 
 STouchDetector::~STouchDetector() {
-	delete eventInjector;
 }
 
 void STouchDetector::average(vector<Mat1s>& frames, Mat1s& mean) {
@@ -116,8 +118,7 @@ void STouchDetector::process(const uint16_t& depthData) {
 			// TODO improve tracking (don't move cursors away, that might be close to another touch point)
             if (cursor == nullptr || cursor->getTuioTime() == tuioTime) {
 				tuio->addTuioCursor(cursorX,cursorY);
-				eventInjector->sendEventToTouchDevice((int)(touchPoints[i].x - xMin),
-														(int)(touchPoints[i].y - yMin));
+				sendEvent((int)(touchPoints[i].x), (int)(touchPoints[i].y));
 				LOGD("TUIO cursor was added at %d %d", (int)touchPoints[i].x, (int)touchPoints[i].y);
 			} else {
 				tuio->updateTuioCursor(cursor, cursorX, cursorY);

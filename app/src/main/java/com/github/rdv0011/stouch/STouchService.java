@@ -1,4 +1,4 @@
-package com.github.dmitryrybakov.stouch;
+package com.github.rdv0011.stouch;
  
 import android.app.Service;
 import android.content.Intent;
@@ -20,7 +20,7 @@ public class STouchService extends Service
 	@Override
 	public void onCreate() {
 	    super.onCreate();
-	    mFreenectInitialized = init();
+		mFreenectInitialized = init();
 	}
 	
 	@Override
@@ -40,9 +40,4 @@ public class STouchService extends Service
  
     public native boolean init();
     public native void cleanup();
- 
-    static
-    {
-        System.loadLibrary("stouch");
-    }
 }
