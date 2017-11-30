@@ -30,6 +30,7 @@
 #include <stdexcept>
 #include <map>
 #include <pthread.h>
+#include <vector>
 
 #define 	FREENECT_FRAME_W   640
 #define 	FREENECT_FRAME_H   480
@@ -140,6 +141,14 @@ namespace Freenect {
 		}
 		freenect_depth_format getDepthFormat() {
 			return m_depth_format;
+		}
+
+		void mapRGBToDepth(const std::vector<uint16_t>& depth_mm,
+                           const std::vector<uint8_t>& rgb_raw,
+                           const std::vector<uint8_t>& rgb_registered) {
+            freenect_map_rgb_to_depth(m_dev, const_cast<uint16_t*>(depth_mm.data()),
+                                      const_cast<uint8_t*>(rgb_raw.data()),
+                                      const_cast<uint8_t*>(rgb_registered.data()));
 		}
 		// Do not call directly even in child
 		virtual void VideoCallback(void *video, uint32_t timestamp) = 0;

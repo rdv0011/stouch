@@ -19,7 +19,7 @@ find_package(OpenCV 3 REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # Try to add the whole src folder using one line
-file(GLOB_RECURSE SRC_FILES "src/main/cpp/libfreenect/*.c" "src/main/cpp/oscpack/*.cpp" "src/main/cpp/TUIO/*.cpp")
+file(GLOB_RECURSE SRC_FILES "src/main/cpp/libfreenect/*.c")
 file(GLOB H_FILES "src/main/cpp" "src/main/cpp/*/" "src/main/cpp/*/*/" "src/main/cpp/*/*/*/" "src/main/cpp/stouchFreenect.hpp")
 
 set(LIBUSB_SRC_REL "src/main/cpp/libusb")

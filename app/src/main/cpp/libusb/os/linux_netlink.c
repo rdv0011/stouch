@@ -307,7 +307,7 @@ static int linux_netlink_read_message(void)
 
 	/* TODO -- authenticate this message is from the kernel or udevd */
 
-	r = linux_netlink_parse(buffer, len, &detached, &sys_name,
+	r = linux_netlink_parse((void*)buffer, len, &detached, &sys_name,
 				&busnum, &devaddr);
 	if (r)
 		return r;

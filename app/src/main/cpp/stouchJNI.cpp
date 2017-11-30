@@ -4,7 +4,7 @@
 
 JNIEnv *env;
 jclass javaActivityClassRef;
-jmethodID javaVirtualMetricsUpdatedRef;
+jmethodID javaVirtualROIUpdatedRef;
 jmethodID javaSendEventRef;
 
 /////// USB TESTING
@@ -27,14 +27,14 @@ jboolean init(JNIEnv*  env, jobject  thiz) {
 
     /////// USB TESTING
 
-    register struct passwd *pw;
-    register uid_t uid;
+    struct passwd *pw;
+    uid_t uid;
     int c;
-    register gid_t gid;
-    register struct group *grp;
+    gid_t gid;
+    struct group *grp;
     grp = getgrgid(gid);
 
-    uid = geteuid();
+    uid = 0;//geteuid();
     pw = getpwuid(uid);
 
 
@@ -139,7 +139,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
         return -1;
     }
     javaActivityClassRef = (jclass) env->NewGlobalRef(activityDataClass);
-    javaVirtualMetricsUpdatedRef = env->GetMethodID(javaActivityClassRef, "virtualMetricsUpdated", "(IIII)V");
+    javaVirtualROIUpdatedRef = env->GetMethodID(javaActivityClassRef, "virtualROIUpdated", "(IIII)V");
     javaSendEventRef = env->GetMethodID(javaActivityClassRef, "sendEvent", "(II)V");
 
     LOGD("JNI_OnLoad() complete!");
@@ -147,10 +147,10 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     return JNI_VERSION_1_4;
 }
 
-void virtualMetricsUpdated(int xVirtualOffset, int yVirtualOffset,
+void virtualROIUpdated(int xVirtualOffset, int yVirtualOffset,
                          int virtualWidth, int virtualHeight) {
-    jobject javaObjectRef = env->NewObject(javaActivityClassRef, javaVirtualMetricsUpdatedRef);
-    env->CallVoidMethod(javaObjectRef, javaVirtualMetricsUpdatedRef,
+    jobject javaObjectRef = env->NewObject(javaActivityClassRef, javaVirtualROIUpdatedRef);
+    env->CallVoidMethod(javaObjectRef, javaVirtualROIUpdatedRef,
                         xVirtualOffset, yVirtualOffset,
                         virtualWidth, virtualHeight);
 }

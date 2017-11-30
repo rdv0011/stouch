@@ -1,6 +1,10 @@
 // Kinect driver
+#include <list>
+
 #include "libfreenect.hpp"
 #include "stouchDetector.h"
+
+using namespace std::placeholders;
 
 #if defined(ANDROID)
 #include <android/log.h>
@@ -14,14 +18,19 @@
 class STouchFreenectDevice: public Freenect::FreenectDevice {
 public:
 	STouchFreenectDevice(freenect_context *_ctx, int _index):FreenectDevice(_ctx, _index) {
+        detector.mapRGBToDepth = std::bind(&Freenect::FreenectDevice::mapRGBToDepth, this, _1, _2, _3);
 	}
 
 	virtual void VideoCallback(void *video, uint32_t timestamp) {
+        uint8_t *ptrVideo = static_cast<uint8_t*>(video);
+        std::vector<uint8_t> refVideo(ptrVideo, ptrVideo + FREENECT_VIDEO_RGB_SIZE);
+        detector.processVideo(refVideo);
 	}
 
 	virtual void DepthCallback(void *depth, uint32_t timestamp) {
-		uint16_t *refDepth = static_cast<uint16_t*>(depth);
-		detector.process(*refDepth);
+		uint16_t *ptrDepth = static_cast<uint16_t*>(depth);
+        std::vector<uint16_t> refDepth(ptrDepth, ptrDepth + FREENECT_VIDEO_IR_10BIT_SIZE);
+		detector.processDepth(refDepth);
 	}
 private:
 	STouchDetector detector;
@@ -42,6 +51,7 @@ public:
 	    	else {
 	    		STouchFreenectDevice& device = createDevice<STouchFreenectDevice>(0);
 	    		device.setDepthFormat(FREENECT_DEPTH_MM);
+				device.setVideoFormat(FREENECT_VIDEO_RGB);
 	    		start();
 	    		LOGD("Freenect successfully initialized");
 	    	}
