@@ -2,6 +2,10 @@ package com.github.rdv0011.stouch;
  
 import com.github.rdv0011.stouch.STouchService.LocalBinder;
 
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -49,21 +53,13 @@ public class STouchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Switch the app to the full screen mode and hide status bar
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-
+        // Set main layout
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // Example of a call to a native method
         textView1 = (TextView) findViewById(R.id.sample_text);
         bindImpl();
@@ -112,7 +108,7 @@ public class STouchActivity extends AppCompatActivity {
         }
     }
 
-    public void virtualMetricsUpdated(int xVirtualOffset, int yVirtualOffset,
+    public void virtualROIUpdated(int xVirtualOffset, int yVirtualOffset,
                                     int virtualWidth, int virtualHeight) {
         DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
         mTouchInjector = new STouchEventInjector(xVirtualOffset, yVirtualOffset,

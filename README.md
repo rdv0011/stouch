@@ -56,8 +56,13 @@ If compilation fails due to undefined structure setrlimit, just add next line to
 
 Compilation may fail because Stream.pm perl package is not installed. To fix just install it.
 
-# How to fix a problem with the USB permissions:
+# Creating java key store
 
+openssl pkcs8 -in platform.pk8 -inform DER -outform PEM -out platform.priv.pem -nocrypt
+
+openssl pkcs12 -export -in platform.x509.pem -inkey platform.priv.pem -out platform.pk12 -name android
+
+keytool -importkeystore -destkeystore platform.jks -srckeystore platform.pk12 -srcstoretype PKCS12 -srcstorepass android -alias android
 
 
 ## Useful ADB commands
