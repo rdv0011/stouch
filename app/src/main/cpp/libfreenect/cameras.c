@@ -1023,7 +1023,10 @@ int freenect_start_video(freenect_device *dev)
 
 	FN_INFO("[Stream 80] Negotiated packet size %d\n", packet_size);
 
-	int res = fnusb_start_iso(&dev->usb_cam, &dev->video_isoc, video_process, video_endpoint, NUM_XFERS, PKTS_PER_XFER, packet_size);
+	int res = fnusb_start_iso(&dev->usb_cam, &dev->video_isoc,
+							  video_process, video_endpoint,
+							  NUM_XFERS, PKTS_PER_XFER,
+							  packet_size);
 	if (res < 0)
 		return res;
 

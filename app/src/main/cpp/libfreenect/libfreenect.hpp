@@ -81,15 +81,18 @@ namespace Freenect {
 
 	class FreenectDevice : Noncopyable {
 	  public:
-		FreenectDevice(freenect_context *_ctx, int _index) {
+		FreenectDevice(freenect_context *_ctx, int _index):
+                m_video_format(FREENECT_VIDEO_DUMMY),
+                m_depth_format(FREENECT_DEPTH_DUMMY) {
 			if(freenect_open_device(_ctx, &m_dev, _index) < 0) {
 				char _log[512];
 				sprintf(_log, "Cannot open Kinect device number %d\n", _index);
 				throw std::runtime_error(_log);
 			}
 			freenect_set_user(m_dev, this);
+            // Setup default values
 			freenect_set_video_mode(m_dev, freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_VIDEO_RGB));
-			freenect_set_depth_mode(m_dev, freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_DEPTH_11BIT));
+			freenect_set_depth_mode(m_dev, freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_DEPTH_MM));
 			freenect_set_depth_callback(m_dev, freenect_depth_callback);
 			freenect_set_video_callback(m_dev, freenect_video_callback);
 		}
@@ -123,7 +126,11 @@ namespace Freenect {
 		void setVideoFormat(freenect_video_format requested_format) {
 			if (requested_format != m_video_format) {
 				freenect_stop_video(m_dev);
-				if (freenect_set_video_mode(m_dev, freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, requested_format)) < 0) throw std::runtime_error("Cannot set video format");
+				if (freenect_set_video_mode(m_dev,
+                                            freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM,
+                                                                     requested_format)) < 0) {
+                    throw std::runtime_error("Cannot set video format");
+                }
 				freenect_start_video(m_dev);
 				m_video_format = requested_format;
 			}
@@ -134,21 +141,17 @@ namespace Freenect {
 		void setDepthFormat(freenect_depth_format requested_format) {
 			if (requested_format != m_depth_format) {
 				freenect_stop_depth(m_dev);
-				if (freenect_set_depth_mode(m_dev, freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM, requested_format)) < 0) throw std::runtime_error("Cannot set depth format");
+				if (freenect_set_depth_mode(m_dev,
+                                            freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM,
+                                                                     requested_format)) < 0) {
+                    throw std::runtime_error("Cannot set depth format");
+                }
 				freenect_start_depth(m_dev);
 				m_depth_format = requested_format;
 			}
 		}
 		freenect_depth_format getDepthFormat() {
 			return m_depth_format;
-		}
-
-		void mapRGBToDepth(const std::vector<uint16_t>& depth_mm,
-                           const std::vector<uint8_t>& rgb_raw,
-                           const std::vector<uint8_t>& rgb_registered) {
-            freenect_map_rgb_to_depth(m_dev, const_cast<uint16_t*>(depth_mm.data()),
-                                      const_cast<uint8_t*>(rgb_raw.data()),
-                                      const_cast<uint8_t*>(rgb_registered.data()));
 		}
 		// Do not call directly even in child
 		virtual void VideoCallback(void *video, uint32_t timestamp) = 0;
@@ -172,8 +175,9 @@ namespace Freenect {
 			if(m_depth_format == FREENECT_DEPTH_10BIT_PACKED) return FREENECT_DEPTH_10BIT_PACKED_SIZE;
 			return 0;
 		}
-	  private:
+	protected:
 		freenect_device *m_dev;
+	private:
 		freenect_video_format m_video_format;
 		freenect_depth_format m_depth_format;
 		static void freenect_depth_callback(freenect_device *dev, void *depth, uint32_t timestamp) {
@@ -192,7 +196,7 @@ namespace Freenect {
 	  public:
 		Freenect() : m_stop(false), m_thread(0) {
 			if(freenect_init(&m_ctx, NULL) < 0) throw std::runtime_error("Cannot initialize freenect library");
-			freenect_set_log_level(m_ctx, FREENECT_LOG_ERROR);
+			freenect_set_log_level(m_ctx, FREENECT_LOG_DEBUG);
 			freenect_select_subdevices(m_ctx, (freenect_device_flags)(FREENECT_DEVICE_CAMERA));
 		}
 
@@ -206,7 +210,9 @@ namespace Freenect {
 		}
 
 		void start() {
-			if(pthread_create(&m_thread, NULL, pthread_callback, (void*)this) != 0) throw std::runtime_error("Cannot initialize freenect thread");
+			if(pthread_create(&m_thread, NULL, pthread_callback, (void*)this) != 0) {
+                throw std::runtime_error("Cannot initialize freenect thread");
+            }
 		}
 
 		template <typename ConcreteDevice>
@@ -217,6 +223,7 @@ namespace Freenect {
 			m_devices.insert(std::make_pair(_index, device));
 			return *device;
 		}
+
 		void deleteDevice(int _index) {
 			DeviceMap::iterator it = m_devices.find(_index);
 			if (it == m_devices.end()) return;

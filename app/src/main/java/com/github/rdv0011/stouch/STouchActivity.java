@@ -2,15 +2,15 @@ package com.github.rdv0011.stouch;
  
 import com.github.rdv0011.stouch.STouchService.LocalBinder;
 
-import android.graphics.Color;
-import android.support.design.widget.CoordinatorLayout;
+//import android.graphics.Color;
+//import android.support.design.widget.CoordinatorLayout;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+//import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -54,9 +54,9 @@ public class STouchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Switch the app to the full screen mode and hide status bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         // Set main layout
         setContentView(R.layout.activity_main);

@@ -64,6 +64,10 @@ openssl pkcs12 -export -in platform.x509.pem -inkey platform.priv.pem -out platf
 
 keytool -importkeystore -destkeystore platform.jks -srckeystore platform.pk12 -srcstoretype PKCS12 -srcstorepass android -alias android
 
+# Fix an access to USB device
+
+A way to temporarily fix an access to USB. After running the following command re-connect a device:
+$./fixusb.sh
 
 ## Useful ADB commands
 

@@ -1,6 +1,6 @@
 #include <jni.h>
 #include "freenect_internal.h"
-#include "stouchFreenect.hpp"
+#include "stouchFreenect.h"
 
 JNIEnv *env;
 jclass javaActivityClassRef;
@@ -17,6 +17,7 @@ jmethodID javaSendEventRef;
 ssize_t libusb_get_device_list(libusb_context *ctx, libusb_device ***list);
 
 STouchFreenect *freenectDriver = nullptr;
+STouchDetector *touchDetector = nullptr;
 
 ///////////////////////////
 
@@ -79,7 +80,13 @@ jboolean init(JNIEnv*  env, jobject  thiz) {
 
     try {
     	freenectDriver = new STouchFreenect;
-    	ret = freenectDriver->init() ? JNI_TRUE: JNI_FALSE;
+        touchDetector = new STouchDetector;
+        STouchFreenectDevice *device = nullptr;
+    	ret = freenectDriver->init(touchDetector, device) ? JNI_TRUE: JNI_FALSE;
+        if (ret == JNI_TRUE) {
+            touchDetector->deviceDelegate =  device;
+        }
+
 	}
 	catch(std::runtime_error& err) {
 		LOGE("%s", err.what());
@@ -90,10 +97,10 @@ jboolean init(JNIEnv*  env, jobject  thiz) {
 void cleanup(JNIEnv*  env) {
     LOGD("Delete freenect driver");
     try {
-    	if (freenectDriver) {
-    		delete freenectDriver;
-    		freenectDriver = nullptr;
-    	}
+        delete freenectDriver;
+        freenectDriver = nullptr;
+        delete touchDetector;
+        touchDetector = nullptr;
     }
     catch(std::runtime_error& err) {
     	LOGE("Freenect cleanup error %s", err.what());

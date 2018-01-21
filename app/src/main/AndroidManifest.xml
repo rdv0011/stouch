@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.rdv0011.stouch">
-    <!-- Uncomment this to enable an access to USB devices
-    android:process="system"
-    android:sharedUserId="android.uid.system"> -->
+    <!--android:sharedUserId="android.uid.system"--> <!-- Uncomment this to have an access to USB-->
 
-   <uses-permission android:name="android.permission.INJECT_EVENTS"/>
+    <uses-permission android:name="android.permission.INJECT_EVENTS"/>
 
     <application
         android:allowBackup="true"
@@ -15,6 +13,7 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/AppTheme">
+        <!--android:process="system" --> <!-- Uncomment this to have an access to USB-->
 
         <service android:name=".STouchService"
             android:enabled="true"
