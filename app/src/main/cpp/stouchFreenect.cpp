@@ -4,5 +4,6 @@
 #include "freenect_internal.h"
 #include "stouchFreenect.h"
 
-const freenect_video_format STouchFreenectDevice::VideoFormat = FREENECT_VIDEO_RGB;
-const freenect_depth_format STouchFreenectDevice::DepthFormat = FREENECT_DEPTH_REGISTERED;
+STouchFreenectDevice::STouchFreenectDevice(freenect_context *_ctx,
+                                           int _index):FreenectDevice(_ctx, _index) {
+}

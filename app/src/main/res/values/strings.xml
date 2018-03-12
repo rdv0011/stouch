@@ -5,5 +5,9 @@
     <string name="bind">Start</string>
     <string name="unbind">Stop</string>
     <string name="freenect_started">Service is running</string>
-    <string name="freenect_stopped">Service stopped</string>
+    <string name="freenect_stopped">Service is stopped</string>
+    <string name="fps_format" formatted="false">%d FPS Calibration state [%d] progress [%d]</string>
+    <string name="roi_format" formatted="false">ROI x: %d y: %d width: %d height: %d</string>
+    <string name="touch_started">Touch is running</string>
+    <string name="touch_stopped">Touch is stopped</string>
 </resources>

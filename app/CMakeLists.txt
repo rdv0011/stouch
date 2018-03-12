@@ -28,9 +28,11 @@ set(LIBUSB_SRC "${LIBUSB_SRC_REL}/core.c" "${LIBUSB_SRC_REL}/descriptor.c" "${LI
 				"${LIBUSB_SRC_REL}/os/linux_usbfs.c" "${LIBUSB_SRC_REL}/os/poll_posix.c"
 				"${LIBUSB_SRC_REL}/os/threads_posix.c" "${LIBUSB_SRC_REL}/os/linux_netlink.c")
 set(MAIN_SRC_REL "src/main/cpp/")
-set(MAIN_SRC "${MAIN_SRC_REL}/stouchDetector.cpp" "${MAIN_SRC_REL}/stouchJNI.cpp" "${MAIN_SRC_REL}/stouchFreenect.cpp")
+set(MAIN_SRC "${MAIN_SRC_REL}/stouchDetector.cpp" "${MAIN_SRC_REL}/stouchJNI.cpp"
+             "${MAIN_SRC_REL}/stouchJNIEntry.cpp" "${MAIN_SRC_REL}/stouchFreenect.cpp"
+             "${MAIN_SRC_REL}/stouchUtility.cpp")
 set(SRC_FILES ${SRC_FILES} ${LIBUSB_SRC})
-set(SRC_FILES ${SRC_FILES} ${MAIN_SRC})
+set(SRC_FILES ${SRC_FILES}   ${MAIN_SRC})
 
 include_directories(${H_FILES})
 

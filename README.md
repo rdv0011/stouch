@@ -109,3 +109,10 @@ To send mouse event
 ``` bash
 adb shell sendevent /dev/input/mice 3 0 x
 ```
+
+## Building OpenCV with NEON support
+git clone https://github.com/opencv/opencv.git ~/
+mkdir -p ~/opencv/platforms/android/build_neon
+cd ~/opencv/platforms/android/build_neon
+export ANDROID_NDK=~/Library/Android/sdk/ndk-bundle
+cmake -DANDROID_NATIVE_API_LEVEL='android-15' -DANDROID_ABI="armeabi-v7a with NEON" -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake ../../..

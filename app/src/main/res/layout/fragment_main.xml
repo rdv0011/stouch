@@ -6,16 +6,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main"
-    tools:context="com.github.rdv0011.stouch.MainActivityFragment">
+    tools:context="com.github.rdv0011.stouch.MainActivityFragment"
+    tools:layout_editor_absoluteY="0dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <TextView
-        android:id="@+id/sample_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/roi_text"
+        android:layout_width="325dp"
+        android:layout_height="20dp"
+        android:maxLines="3"
+        android:text="@string/roi_format"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="@+id/kinectPreview"
+        app:layout_constraintRight_toRightOf="@+id/kinectPreview"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/kinectPreview" />
+
+    <TextView
+        android:id="@+id/touch_status_text"
+        android:layout_width="124dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="0dp"
+        android:maxLines="3"
+        android:text="@string/touch_stopped"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/fps_text"
+        app:layout_constraintRight_toRightOf="@+id/fps_text" />
+
+    <TextView
+        android:id="@+id/service_status_text"
+        android:layout_width="124dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="8dp"
+        android:maxLines="3"
         android:text="@string/freenect_stopped"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/fps_text"
+        app:layout_constraintLeft_toLeftOf="@+id/fps_text"
+        tools:layout_constraintLeft_creator="1" />
+
+    <TextView
+        android:id="@+id/fps_text"
+        android:layout_width="327dp"
+        android:layout_height="21dp"
+        android:layout_alignTop="@id/roi_text"
+        android:layout_toRightOf="@id/roi_text"
+        android:maxLines="3"
+        android:text="@string/fps_format"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/roi_text"
+        app:layout_constraintRight_toRightOf="@+id/roi_text"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/roi_text"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <com.github.rdv0011.stouch.KinectPreview
+        android:id="@+id/kinectPreview"
+        android:layout_width="327dp"
+        android:layout_height="241dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/startCalibrationButton"
+        android:layout_width="158dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="Start calibrarion"
+        android:textOff="Start Calibration"
+        android:textOn="Stop Calibration"
+        app:layout_constraintLeft_toLeftOf="@+id/kinectPreview"
+        app:layout_constraintTop_toBottomOf="@+id/kinectPreview"
+        tools:layout_constraintLeft_creator="1" />
+
+    <ToggleButton
+        android:id="@+id/startTouchButton"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:text="Start Touch"
+        android:textOff="Start Touch"
+        android:textOn="Start Touch"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginRight="9dp"
+        app:layout_constraintRight_toRightOf="@+id/kinectPreview"
+        app:layout_constraintBottom_toBottomOf="@+id/startCalibrationButton"
+        app:layout_constraintTop_toTopOf="@+id/startCalibrationButton"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

@@ -8,7 +8,6 @@ import android.os.IBinder;
 public class STouchService extends Service
 {
 	private final IBinder mBinder = (IBinder)new LocalBinder();
-	private boolean mFreenectInitialized = false; 
 
 	public class LocalBinder extends Binder {
 		STouchService getService() {
@@ -20,24 +19,15 @@ public class STouchService extends Service
 	@Override
 	public void onCreate() {
 	    super.onCreate();
-		mFreenectInitialized = init();
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		cleanup();
 	}
 	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
 	}
-	
-	boolean getFreenectInitialized() {
-		return mFreenectInitialized;
-	}
- 
-    public native boolean init();
-    public native void cleanup();
 }
