@@ -5,6 +5,7 @@ This software is used in the project which creates an interactive surface on the
 This software is supposed to be run on a modified version of the Android system which allows an access to USB devices from a native code.
 
 # How to prepare the Android source code:
+This step is needed to enable injecting touch screen events on Cubiboard A10. Wihtout this module it is not possible to emulate touch events detected by a Kinect sensor.
 To build Android it is possible to use the latest version of Ubuntu in my case the version was 14.10. Source code is taken from here Cubieboard A10 Android and unpack. We need to change two files:
 
 * android / device / softwinner / apollo-cubieboard / init.sun4i.rc
