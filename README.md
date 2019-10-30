@@ -57,17 +57,17 @@ If compilation fails due to undefined structure setrlimit, just add next line to
 
 Compilation may fail because Stream.pm perl package is not installed. To fix just install it.
 
-# Creating java key store
-
-openssl pkcs8 -in platform.pk8 -inform DER -outform PEM -out platform.priv.pem -nocrypt
-
-openssl pkcs12 -export -in platform.x509.pem -inkey platform.priv.pem -out platform.pk12 -name android
-
-keytool -importkeystore -destkeystore platform.jks -srckeystore platform.pk12 -srcstoretype PKCS12 -srcstorepass android -alias android
-
 # Fix an access to USB device
 
-A way to temporarily fix an access to USB. After running the following command re-connect a device:
+The solution with a permanent effect.
+The first step is to sign an application with system (platform) key. System signatures are located in directory <root-of-android-source-tree>/build/target/product/security.
+You can use them to sign your application with system privileges. To create a key store to sign a debug or release app use the commands below:
+``` bash
+openssl pkcs8 -in platform.pk8 -inform DER -outform PEM -out platform.priv.pem -nocrypt
+openssl pkcs12 -export -in platform.x509.pem -inkey platform.priv.pem -out platform.pk12 -name android
+keytool -importkeystore -destkeystore platform.jks -deststoretype pkcs12 -srckeystore platform.pk12 -srcstoretype PKCS12 -srcstorepass android -alias android
+
+An alternative way to temporarily fix an access to USB. After running the following command re-connect a device:
 $./fixusb.sh
 
 ## Useful ADB commands
