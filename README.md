@@ -5,7 +5,7 @@ This software is used in the project which creates an interactive surface on the
 This software is supposed to be run on a modified version of the Android system which allows an access to USB devices from a native code.
 
 # How to prepare the Android source code:
-This step is needed to enable injecting touch screen events on Cubiboard A10. Wihtout this module it is not possible to emulate touch events detected by a Kinect sensor.
+This step is needed to enable injecting touch screen events on Cubiboard A10. Without this module it is not possible to emulate touch events detected by a Kinect sensor.
 To build Android it is possible to use the latest version of Ubuntu in my case the version was 14.10. Source code is taken from here Cubieboard A10 Android and unpack. We need to change two files:
 
 * android / device / softwinner / apollo-cubieboard / init.sun4i.rc
@@ -57,18 +57,22 @@ If compilation fails due to undefined structure setrlimit, just add next line to
 
 Compilation may fail because Stream.pm perl package is not installed. To fix just install it.
 
-# Fix an access to USB device
+# Access to USB device
 
-The solution with a permanent effect.
+On the Android platform there is no access to USB devices from a native code by default. However there a several ways to solve this problem.
+
+## The solution with a permanent effect.
 The first step is to sign an application with system (platform) key. System signatures are located in directory <root-of-android-source-tree>/build/target/product/security.
 You can use them to sign your application with system privileges. To create a key store to sign a debug or release app use the commands below:
 ``` bash
 openssl pkcs8 -in platform.pk8 -inform DER -outform PEM -out platform.priv.pem -nocrypt
 openssl pkcs12 -export -in platform.x509.pem -inkey platform.priv.pem -out platform.pk12 -name android
 keytool -importkeystore -destkeystore platform.jks -deststoretype pkcs12 -srckeystore platform.pk12 -srcstoretype PKCS12 -srcstorepass android -alias android
+  ```
 
-An alternative way to temporarily fix an access to USB. After running the following command re-connect a device:
-$./fixusb.sh
+### Alternative way to temporarily fix an access to USB
+After running the following command re-connect a device to USB port:
+```$./fixusb.sh```
 
 ## Useful ADB commands
 
